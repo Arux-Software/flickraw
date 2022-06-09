@@ -99,3 +99,5 @@ module FlickRaw
   self.check_certificate = true
 
 end
+
+def flickr; $flickraw ||= FlickRaw::Flickr.new end
