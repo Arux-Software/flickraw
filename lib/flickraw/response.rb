@@ -18,9 +18,12 @@ module FlickRaw
       methods = 'class << self;'
       h.each do |k, v|
         @h[k] = case v
-                when Hash  then Response.build(v, k)
-                when Array then v.collect { |e| Response.build(e, k) }
-                else v
+                when Hash
+                  Response.build(v, k)
+                when Array
+                  v.all? { |e| String === e } ? v : v.collect { |e| Response.build(e, k) }
+                else
+                  v
                 end
         methods << "def #{k}; @h['#{k}'] end;" if Util.safe_for_eval?(k)
       end
